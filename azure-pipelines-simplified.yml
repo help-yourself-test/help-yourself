@@ -7,114 +7,114 @@ trigger:
       - main
 
 variables:
-  nodeVersion: '18.x'
-  frontendAppName: 'help-yourself-frontend'
-  backendAppName: 'help-yourself-backend'
+  nodeVersion: "18.x"
+  frontendAppName: "help-yourself-frontend"
+  backendAppName: "help-yourself-backend"
 
 stages:
   - stage: Build
-    displayName: 'Build Application'
+    displayName: "Build Application"
     jobs:
       - job: BuildAndTest
-        displayName: 'Build React App and Node.js API'
+        displayName: "Build React App and Node.js API"
         pool:
-          vmImage: 'ubuntu-latest'
-        
+          vmImage: "ubuntu-latest"
+
         steps:
           # Setup Node.js
           - task: NodeTool@0
-            displayName: 'Install Node.js $(nodeVersion)'
+            displayName: "Install Node.js $(nodeVersion)"
             inputs:
-              versionSpec: '$(nodeVersion)'
-          
+              versionSpec: "$(nodeVersion)"
+
           # Install and test frontend
           - script: |
               npm ci
               npm run test -- --coverage --watchAll=false --testResultsProcessor=jest-junit
-            displayName: 'Install dependencies and run tests'
+            displayName: "Install dependencies and run tests"
             env:
               CI: true
-          
+
           # Build frontend
           - script: |
               npm run build
-            displayName: 'Build React application'
+            displayName: "Build React application"
             env:
               REACT_APP_API_URL: https://$(backendAppName).azurecontainerapps.io/api
               CI: false
-          
+
           # Install and test backend
           - script: |
               cd backend
               npm ci
               npm test || echo "Backend tests not configured yet"
-            displayName: 'Install backend dependencies and run tests'
-          
+            displayName: "Install backend dependencies and run tests"
+
           # Publish frontend artifacts
           - task: PublishBuildArtifacts@1
-            displayName: 'Publish frontend build artifacts'
+            displayName: "Publish frontend build artifacts"
             inputs:
-              pathToPublish: 'build'
-              artifactName: 'frontend'
-          
+              pathToPublish: "build"
+              artifactName: "frontend"
+
           # Publish backend artifacts
           - task: PublishBuildArtifacts@1
-            displayName: 'Publish backend source'
+            displayName: "Publish backend source"
             inputs:
-              pathToPublish: 'backend'
-              artifactName: 'backend'
+              pathToPublish: "backend"
+              artifactName: "backend"
 
   - stage: Deploy
-    displayName: 'Deploy to Azure'
+    displayName: "Deploy to Azure"
     dependsOn: Build
     condition: succeeded()
     jobs:
       - deployment: DeployFrontend
-        displayName: 'Deploy Frontend to Static Web Apps'
+        displayName: "Deploy Frontend to Static Web Apps"
         pool:
-          vmImage: 'ubuntu-latest'
-        environment: 'production'
+          vmImage: "ubuntu-latest"
+        environment: "production"
         strategy:
           runOnce:
             deploy:
               steps:
                 - task: AzureStaticWebApp@0
                   inputs:
-                    azure_static_web_apps_api_token: '$(AZURE_STATIC_WEB_APPS_API_TOKEN)'
-                    app_location: '/'
-                    api_location: ''
-                    output_location: 'build'
+                    azure_static_web_apps_api_token: "$(AZURE_STATIC_WEB_APPS_API_TOKEN)"
+                    app_location: "/"
+                    api_location: ""
+                    output_location: "build"
                     skip_app_build: true
 
       - deployment: DeployBackend
-        displayName: 'Deploy Backend to Container Apps'
+        displayName: "Deploy Backend to Container Apps"
         pool:
-          vmImage: 'ubuntu-latest'
-        environment: 'production'
+          vmImage: "ubuntu-latest"
+        environment: "production"
         strategy:
           runOnce:
             deploy:
               steps:
                 - download: current
                   artifact: backend
-                
+
                 - task: Docker@2
-                  displayName: 'Build and push backend container'
+                  displayName: "Build and push backend container"
                   inputs:
-                    containerRegistry: '$(AZURE_CONTAINER_REGISTRY)'
-                    repository: '$(backendAppName)'
-                    command: 'buildAndPush'
-                    Dockerfile: 'backend/Dockerfile'
-                    buildContext: '$(Pipeline.Workspace)/backend'
+                    containerRegistry: "$(AZURE_CONTAINER_REGISTRY)"
+                    repository: "$(backendAppName)"
+                    command: "buildAndPush"
+                    Dockerfile: "backend/Dockerfile"
+                    buildContext: "$(Pipeline.Workspace)/backend"
                     tags: |
                       $(Build.BuildId)
                       latest
-                
+
                 - task: AzureContainerApps@1
-                  displayName: 'Deploy to Azure Container Apps'
+                  displayName: "Deploy to Azure Container Apps"
                   inputs:
-                    azureSubscription: '$(AZURE_SERVICE_CONNECTION)'
-                    imageToDeploy: '$(AZURE_CONTAINER_REGISTRY)/$(backendAppName):$(Build.BuildId)'
-                    containerAppName: '$(backendAppName)'
-                    resourceGroup: '$(AZURE_RESOURCE_GROUP)'
-                    containerAppEnvironment: '$(AZURE_CONTAINER_APP_ENVIRONMENT)'
+                    azureSubscription: "$(AZURE_SERVICE_CONNECTION)"
+                    imageToDeploy: "$(AZURE_CONTAINER_REGISTRY)/$(backendAppName):$(Build.BuildId)"
+                    containerAppName: "$(backendAppName)"
+                    resourceGroup: "$(AZURE_RESOURCE_GROUP)"
+                    containerAppEnvironment: "$(AZURE_CONTAINER_APP_ENVIRONMENT)"

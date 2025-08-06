@@ -8,6 +8,8 @@ import AppRoutes from "./routes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+// Version: Azure CI/CD Pipeline Test - v1.0.0
+
 function App() {
   return (
     <Provider store={store}>
