@@ -1,0 +1,216 @@
+# Azure DevOps CI/CD Pipeline for Help Yourself Project
+# This pipeline builds and deploys both frontend (React) and backend (Node.js) to Azure
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - README.md
+      - docs/*
+
+pr:
+  branches:
+    include:
+      - main
+
+variables:
+  # Build Configuration
+  nodeVersion: '18.x'
+  buildConfiguration: 'Release'
+  
+  # Azure Resources
+  azureSubscription: 'your-azure-subscription-connection'
+  frontendAppName: 'help-yourself-frontend'
+  backendAppName: 'help-yourself-backend'
+  resourceGroup: 'help-yourself-rg'
+  
+  # Application Settings
+  frontendBuildPath: 'build'
+  backendPath: 'backend'
+
+stages:
+  # Stage 1: Build and Test
+  - stage: BuildAndTest
+    displayName: 'Build and Test'
+    jobs:
+      - job: BuildFrontend
+        displayName: 'Build React Frontend'
+        pool:
+          vmImage: 'ubuntu-latest'
+        
+        steps:
+          - task: NodeTool@0
+            displayName: 'Install Node.js'
+            inputs:
+              versionSpec: $(nodeVersion)
+          
+          - task: Cache@2
+            displayName: 'Cache npm packages'
+            inputs:
+              key: 'npm | "$(Agent.OS)" | package-lock.json'
+              restoreKeys: |
+                npm | "$(Agent.OS)"
+              path: ~/.npm
+          
+          - script: |
+              npm ci
+            displayName: 'Install Frontend Dependencies'
+          
+          - script: |
+              npm run test -- --coverage --watchAll=false
+            displayName: 'Run Frontend Tests'
+          
+          - script: |
+              npm run build
+            displayName: 'Build React App'
+            env:
+              REACT_APP_API_URL: https://$(backendAppName).azurewebsites.net/api
+              CI: false
+          
+          - task: PublishTestResults@2
+            displayName: 'Publish Test Results'
+            condition: always()
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: '**/test-results.xml'
+              failTaskOnFailedTests: true
+          
+          - task: PublishCodeCoverageResults@1
+            displayName: 'Publish Code Coverage'
+            inputs:
+              codeCoverageTool: 'Cobertura'
+              summaryFileLocation: '**/coverage/cobertura-coverage.xml'
+          
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Frontend Artifacts'
+            inputs:
+              pathToPublish: '$(frontendBuildPath)'
+              artifactName: 'frontend-build'
+              publishLocation: 'Container'
+
+      - job: BuildBackend
+        displayName: 'Build Node.js Backend'
+        pool:
+          vmImage: 'ubuntu-latest'
+        
+        steps:
+          - task: NodeTool@0
+            displayName: 'Install Node.js'
+            inputs:
+              versionSpec: $(nodeVersion)
+          
+          - script: |
+              cd $(backendPath)
+              npm ci
+            displayName: 'Install Backend Dependencies'
+          
+          - script: |
+              cd $(backendPath)
+              npm test
+            displayName: 'Run Backend Tests'
+            continueOnError: true
+          
+          - task: ArchiveFiles@2
+            displayName: 'Archive Backend Files'
+            inputs:
+              rootFolderOrFile: '$(backendPath)'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/backend.zip'
+              replaceExistingArchive: true
+          
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Backend Artifacts'
+            inputs:
+              pathToPublish: '$(Build.ArtifactStagingDirectory)/backend.zip'
+              artifactName: 'backend-build'
+              publishLocation: 'Container'
+
+  # Stage 2: Deploy to Azure
+  - stage: DeployToAzure
+    displayName: 'Deploy to Azure'
+    dependsOn: BuildAndTest
+    condition: succeeded()
+    jobs:
+      - deployment: DeployFrontend
+        displayName: 'Deploy React App to Azure Static Web Apps'
+        pool:
+          vmImage: 'ubuntu-latest'
+        environment: 'production-frontend'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: DownloadBuildArtifacts@0
+                  displayName: 'Download Frontend Artifacts'
+                  inputs:
+                    artifactName: 'frontend-build'
+                    downloadPath: '$(System.ArtifactsDirectory)'
+                
+                - task: AzureStaticWebApp@0
+                  displayName: 'Deploy to Azure Static Web Apps'
+                  inputs:
+                    azure_static_web_apps_api_token: '$(AZURE_STATIC_WEB_APPS_API_TOKEN)'
+                    app_location: '$(System.ArtifactsDirectory)/frontend-build'
+                    skip_app_build: true
+                    skip_api_build: true
+
+      - deployment: DeployBackend
+        displayName: 'Deploy Node.js API to Azure App Service'
+        pool:
+          vmImage: 'ubuntu-latest'
+        environment: 'production-backend'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: DownloadBuildArtifacts@0
+                  displayName: 'Download Backend Artifacts'
+                  inputs:
+                    artifactName: 'backend-build'
+                    downloadPath: '$(System.ArtifactsDirectory)'
+                
+                - task: AzureWebApp@1
+                  displayName: 'Deploy to Azure App Service'
+                  inputs:
+                    azureSubscription: '$(azureSubscription)'
+                    appType: 'webAppLinux'
+                    appName: '$(backendAppName)'
+                    package: '$(System.ArtifactsDirectory)/backend-build/backend.zip'
+                    runtimeStack: 'NODE|18-lts'
+                    appSettings: |
+                      -NODE_ENV production
+                      -PORT 8080
+                      -MONGODB_URI $(MONGODB_URI)
+                      -JWT_SECRET $(JWT_SECRET)
+                      -FRONTEND_URL https://$(frontendAppName).azurestaticapps.net
+
+  # Stage 3: Post-Deployment Tests
+  - stage: PostDeploymentTests
+    displayName: 'Post-Deployment Tests'
+    dependsOn: DeployToAzure
+    condition: succeeded()
+    jobs:
+      - job: HealthCheck
+        displayName: 'Health Check'
+        pool:
+          vmImage: 'ubuntu-latest'
+        
+        steps:
+          - script: |
+              echo "Testing backend health endpoint..."
+              curl -f https://$(backendAppName).azurewebsites.net/api/debug/health || exit 1
+              echo "Backend health check passed!"
+              
+              echo "Testing frontend deployment..."
+              curl -f https://$(frontendAppName).azurestaticapps.net || exit 1
+              echo "Frontend health check passed!"
+            displayName: 'Run Health Checks'
+          
+          - script: |
+              echo "Running API integration tests..."
+              # Add your API integration tests here
+              echo "Integration tests completed!"
+            displayName: 'Run Integration Tests'

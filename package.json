@@ -35,8 +35,12 @@
     "lint:check": "eslint src --ext .js,.jsx",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
+    "deploy:azure": "npm run build:azure && echo 'Deploy to Azure via pipeline'",
+    "build:azure": "cross-env REACT_APP_API_URL=https://help-yourself-backend.azurecontainerapps.io/api npm run build",
     "docker:build": "docker build -t help-yourself-admin .",
     "docker:run": "docker run -p 3000:80 help-yourself-admin",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up --build",
+    "docker:dev:down": "docker-compose -f docker-compose.dev.yml down",
     "deploy:test": "npm run test:ci && npm run build && npm run docker:build",
     "eject": "react-scripts eject",
     "seed-data": "node mockData.js"
@@ -62,6 +66,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.21",
     "concurrently": "^9.2.0",
+    "cross-env": "^10.0.0",
     "gh-pages": "^6.3.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.11"
