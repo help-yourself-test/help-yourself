@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/help-yourself/static/css/main.6c23e993.css",
+    "main.js": "/help-yourself/static/js/main.d7060111.js",
+    "index.html": "/help-yourself/index.html",
+    "main.6c23e993.css.map": "/help-yourself/static/css/main.6c23e993.css.map",
+    "main.d7060111.js.map": "/help-yourself/static/js/main.d7060111.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6c23e993.css",
+    "static/js/main.d7060111.js"
+  ]
+}
