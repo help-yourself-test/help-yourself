@@ -1,0 +1,264 @@
+.job-carousel {
+  width: 100%;
+}
+
+.job-carousel-item {
+  padding: 0 10px;
+  height: 100%;
+}
+
+.job-card {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.job-card:hover {
+  border-color: #667eea;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+}
+
+.job-card.public-job-card:hover {
+  border-color: #667eea;
+}
+
+.job-card.admin-job-card:hover {
+  border-color: #3498db;
+}
+
+.job-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.job-title {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.job-company {
+  margin: 0;
+  color: #667eea;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.job-location {
+  margin: 0;
+  color: #7f8c8d;
+  font-size: 0.95rem;
+}
+
+.job-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.tag {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.tag.job-type {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.tag.work-mode {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.tag.status.active {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.tag.status.inactive {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.job-salary {
+  margin: 0;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.job-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.job-stats span {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.job-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+.btn-edit {
+  background: #3498db;
+  color: white;
+}
+
+.btn-edit:hover {
+  background: #2980b9;
+  transform: translateY(-1px);
+}
+
+.btn-delete {
+  background: #e74c3c;
+  color: white;
+}
+
+.btn-delete:hover {
+  background: #c0392b;
+  transform: translateY(-1px);
+}
+
+/* Carousel specific styling */
+.job-carousel .carousel-arrow {
+  background: rgba(102, 126, 234, 0.1);
+  border: 2px solid #667eea;
+  color: #667eea;
+}
+
+.job-carousel .carousel-arrow:hover {
+  background: #667eea;
+  color: white;
+}
+
+.job-carousel .carousel-dot {
+  background: #e0e6ff;
+  border: 2px solid #667eea;
+}
+
+.job-carousel .carousel-dot.active {
+  background: #667eea;
+}
+
+/* Admin carousel styling */
+.job-carousel.admin-carousel .carousel-arrow {
+  border-color: #3498db;
+  color: #3498db;
+}
+
+.job-carousel.admin-carousel .carousel-arrow:hover {
+  background: #3498db;
+}
+
+.job-carousel.admin-carousel .carousel-dot {
+  border-color: #3498db;
+}
+
+.job-carousel.admin-carousel .carousel-dot.active {
+  background: #3498db;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .job-card {
+    padding: 15px;
+  }
+
+  .job-title {
+    font-size: 1.2rem;
+  }
+
+  .job-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .job-carousel-item {
+    padding: 0 5px;
+  }
+
+  .job-card {
+    padding: 12px;
+  }
+
+  .job-title {
+    font-size: 1.1rem;
+  }
+
+  .job-tags {
+    gap: 6px;
+  }
+
+  .tag {
+    padding: 3px 10px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Loading state */
+.job-carousel.loading .job-card {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Empty state */
+.job-carousel-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #7f8c8d;
+}
+
+.job-carousel-empty h3 {
+  margin: 0 0 10px 0;
+  color: #2c3e50;
+}
+
+.job-carousel-empty p {
+  margin: 0;
+}

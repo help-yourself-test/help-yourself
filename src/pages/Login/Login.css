@@ -1,0 +1,498 @@
+.login-page {
+  min-height: 100vh; /* Full viewport height */
+  height: 100vh; /* Fixed full viewport height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2rem; /* Add padding for floating effect */
+  margin: 0;
+}
+
+.login-container {
+  background: white;
+  border-radius: 20px; /* Add rounded corners for floating effect */
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15); /* Strong shadow for floating effect */
+  width: 90%; /* Responsive width */
+  max-width: 1200px; /* Maximum width */
+  height: auto; /* Auto height */
+  max-height: 85vh; /* Limit height to maintain floating appearance */
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 600px; /* Minimum height */
+  overflow: hidden;
+  transform: translateY(-10px); /* Slight lift effect */
+  transition: all 0.3s ease; /* Smooth transition */
+}
+
+/* Container Header for tabs */
+.container-header {
+  background: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  padding: 0; /* Remove all padding */
+  border-radius: 20px 20px 0 0;
+}
+
+/* Header tabs styling - different from details tabs */
+.container-header .account-type-tabs {
+  display: flex;
+  gap: 0; /* No gap between tabs */
+  margin: 0; /* Remove all margin */
+  border-radius: 20px 20px 0 0; /* Match container radius */
+  overflow: hidden;
+  border: none; /* Remove border to avoid double borders */
+  background-color: transparent;
+  position: relative;
+  box-shadow: none;
+  justify-content: stretch; /* Use full width */
+  width: 100%; /* Full width */
+}
+
+/* Header tab buttons */
+.container-header .tab-button {
+  flex: 1; /* Equal width distribution */
+  min-width: 0; /* Allow shrinking */
+  padding: 16px 24px; /* Consistent internal padding */
+  margin: 0; /* Remove any margin */
+  border: none;
+  border-right: 1px solid #dee2e6; /* Separator between tabs */
+  background-color: white;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0;
+  position: relative;
+  z-index: 2;
+  box-shadow: none;
+}
+
+/* Remove border from last tab */
+.container-header .tab-button:last-child {
+  border-right: none;
+}
+
+/* First tab rounded left corners */
+.container-header .tab-button:first-child {
+  border-radius: 20px 0 0 0; /* Match container radius */
+}
+
+/* Last tab rounded right corners */
+.container-header .tab-button:last-child {
+  border-radius: 0 20px 0 0; /* Match container radius */
+}
+
+.container-header .tab-button:hover {
+  background-color: #e9ecef;
+  color: #333;
+  transform: translateY(-1px); /* Subtle lift effect on hover */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: all 0.2s ease;
+}
+
+.container-header .tab-button.active {
+  background-color: #007bff;
+  color: white;
+  font-weight: 600;
+  transform: none; /* Remove lift effect */
+  box-shadow: none;
+}
+
+/* Active tab hover - maintain active appearance with slight enhancement */
+.container-header .tab-button.active:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  color: white;
+  transform: none;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3); /* Subtle blue shadow */
+}
+
+/* Remove the sliding indicator for header tabs */
+.container-header .account-type-tabs::before {
+  display: none;
+}
+
+/* Container Content for main layout */
+.container-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 1;
+  overflow: hidden;
+}
+
+.login-container:hover {
+  transform: translateY(-15px); /* Enhanced lift on hover */
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+/* Left Side - Details */
+.login-details {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.details-content {
+  text-align: center;
+}
+
+.role-details {
+  margin-top: 2rem;
+}
+
+.role-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.role-details h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.role-details p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+.role-features {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.role-features li {
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* Right Side - Form */
+.login-form-section {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  /* Hide scrollbar while keeping functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.login-form-section::-webkit-scrollbar {
+  display: none;
+}
+
+/* Add padding to the content inside the scrollable area */
+.login-form-content {
+  padding: 3rem 2rem;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-header h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.login-header p {
+  color: #666;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Account Type Tabs - Now on left side */
+.account-type-tabs {
+  display: flex;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+/* Sliding indicator */
+.account-type-tabs::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 50%;
+  background: linear-gradient(90deg, #007bff, #0056b3);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.account-type-tabs:has(.tab-button:nth-child(2).active)::before {
+  transform: translateX(100%);
+}
+
+.tab-button {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 2;
+  transform: scale(1);
+}
+
+.tab-button:last-child {
+  border-right: none;
+}
+
+.tab-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  transform: scale(1.02);
+}
+
+.tab-button.active {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: white;
+  font-weight: 600;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+  animation: tabActivate 0.3s ease-out;
+}
+
+.tab-button.active:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.05);
+}
+
+@keyframes tabActivate {
+  0% {
+    transform: scale(1);
+    box-shadow: none;
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+  }
+  100% {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  }
+}
+
+/* Override form container styles for login */
+.login-container .form-container {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  max-width: none;
+}
+
+.login-container .form-container h2 {
+  display: none; /* Hide the form title since we have our own header */
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 1rem 0;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.login-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.forgot-password {
+  margin-bottom: 1rem;
+}
+
+.signup-link {
+  padding-top: 1rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.link {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+.signup-link span {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Form field customizations for login */
+.login-container .form-group input {
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.login-container .form-group input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.login-container .checkbox-label {
+  justify-content: flex-start;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .login-page {
+    padding: 0.5rem;
+    min-height: 100vh;
+    align-items: flex-start;
+    padding-top: 2rem;
+  }
+
+  .login-container {
+    padding: 1.5rem;
+    border-radius: 8px;
+    max-width: 100%;
+  }
+
+  .login-header h1 {
+    font-size: 1.6rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .login-header p {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-container {
+    grid-template-columns: 1fr;
+    max-width: 450px;
+  }
+
+  .login-details {
+    padding: 2rem 1rem;
+    order: 2;
+  }
+
+  .login-form-section {
+    padding: 2rem 1rem;
+    order: 1;
+  }
+
+  .role-details {
+    margin-top: 1rem;
+  }
+
+  .role-icon {
+    font-size: 3rem;
+  }
+
+  .role-details h2 {
+    font-size: 1.5rem;
+  }
+
+  .login-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+
+  .forgot-password,
+  .signup-link {
+    margin-bottom: 1rem;
+  }
+
+  .signup-link span {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Medium screens (tablets) */
+@media (max-width: 768px) {
+  .login-container {
+    width: 95%;
+    max-height: 90vh;
+    min-height: 500px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-page {
+    padding: 1rem; /* Maintain some padding on mobile */
+  }
+
+  .login-container {
+    border-radius: 15px; /* Slightly reduced radius on mobile */
+    width: 95%; /* More space on mobile */
+    max-height: 90vh; /* Allow more height on mobile */
+    transform: translateY(-5px); /* Reduced lift on mobile */
+  }
+
+  .login-container:hover {
+    transform: translateY(-8px); /* Reduced hover effect on mobile */
+  }
+
+  .login-details,
+  .login-form-section {
+    padding: 1.5rem 1rem;
+  }
+
+  .login-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .login-header p {
+    font-size: 0.85rem;
+  }
+
+  .role-features {
+    font-size: 0.9rem;
+  }
+
+  .forgot-password,
+  .signup-link {
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,22 @@
+.admin-profile {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-profile h2 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.profile-info {
+  margin-top: 1.5rem;
+}
+
+.profile-info p {
+  margin: 0.5rem 0;
+  color: #555;
+}

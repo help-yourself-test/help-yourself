@@ -1,0 +1,458 @@
+.carousel {
+  position: relative;
+  width: 100%;
+  outline: none;
+  padding: 0 70px; /* Add padding to make room for arrows */
+  overflow: visible; /* Allow arrows to be visible outside container */
+}
+
+.carousel-container {
+  position: relative;
+  overflow: visible; /* Changed from hidden to visible for arrows */
+  border-radius: 8px;
+}
+
+.carousel-wrapper {
+  overflow: hidden; /* Keep content clipping only in wrapper */
+  width: 100%;
+  border-radius: 8px; /* Move border radius here */
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.carousel-slide {
+  flex-shrink: 0;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.carousel-slide > * {
+  width: 100%;
+  height: 100%;
+}
+
+/* Arrows */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 15; /* Higher z-index to ensure visibility */
+  user-select: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.carousel-arrow:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2);
+  color: #007bff;
+}
+
+.carousel-arrow:active {
+  transform: translateY(-50%) scale(0.95);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2), 0 1px 6px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-arrow:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: translateY(-50%) scale(1);
+}
+
+.carousel-arrow-prev {
+  left: 10px; /* Position inside the padding area */
+}
+
+.carousel-arrow-next {
+  right: 10px; /* Position inside the padding area */
+}
+
+/* Dots */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 0 20px;
+}
+
+.carousel-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: #ddd;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel-dot:hover {
+  background: #007bff;
+  transform: scale(1.2);
+}
+
+.carousel-dot.active {
+  background: #007bff;
+  transform: scale(1.3);
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+}
+
+/* Desktop specific arrow enhancements */
+@media (min-width: 769px) {
+  .carousel {
+    padding: 0 80px; /* More padding on desktop */
+  }
+
+  .carousel-arrow {
+    width: 55px;
+    height: 55px;
+    font-size: 26px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2), 0 3px 12px rgba(0, 0, 0, 0.1),
+      0 0 20px rgba(0, 123, 255, 0.1);
+    background: rgba(255, 255, 255, 0.98);
+  }
+
+  .carousel-arrow:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25), 0 4px 15px rgba(0, 0, 0, 0.15),
+      0 0 25px rgba(0, 123, 255, 0.3);
+    transform: translateY(-50%) scale(1.15);
+    background: rgba(255, 255, 255, 1);
+  }
+
+  .carousel-arrow-prev {
+    left: 15px; /* Position within the larger desktop padding */
+  }
+
+  .carousel-arrow-next {
+    right: 15px; /* Position within the larger desktop padding */
+  }
+
+  /* Add subtle pulse animation */
+  .carousel-arrow::after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    background: rgba(0, 123, 255, 0.1);
+    z-index: -1;
+    animation: pulse 3s infinite;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .carousel {
+    padding: 0 60px; /* Reduced padding on tablets */
+  }
+
+  .carousel-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .carousel-arrow-prev {
+    left: 10px; /* Position within tablet padding */
+  }
+
+  .carousel-arrow-next {
+    right: 10px; /* Position within tablet padding */
+  }
+
+  .carousel-slide {
+    padding: 0 5px;
+  }
+
+  .carousel-dots {
+    margin-top: 15px;
+    gap: 6px;
+  }
+
+  .carousel-dot {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel {
+    padding: 0 50px; /* Even less padding on mobile */
+  }
+
+  .carousel-arrow {
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .carousel-arrow-prev {
+    left: 5px; /* Position within mobile padding */
+  }
+
+  .carousel-arrow-next {
+    right: 5px; /* Position within mobile padding */
+  }
+
+  .carousel-slide {
+    padding: 0 3px;
+  }
+
+  .carousel-dots {
+    margin-top: 12px;
+    gap: 5px;
+  }
+
+  .carousel-dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Touch interaction improvements */
+  .carousel-wrapper {
+    touch-action: pan-y pinch-zoom;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+
+  .carousel-wrapper::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  .carousel-track {
+    transition: transform 0.3s ease-out;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .carousel-arrow {
+    background: white;
+    border: 2px solid black;
+    color: black;
+  }
+
+  .carousel-dot {
+    border: 2px solid black;
+  }
+
+  .carousel-dot.active {
+    background: black;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .carousel-track {
+    transition: none;
+  }
+
+  .carousel-arrow {
+    transition: none;
+  }
+
+  .carousel-dot {
+    transition: none;
+  }
+}
+
+/* Focus styles for accessibility */
+.carousel-arrow:focus,
+.carousel-dot:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Loading state */
+.carousel.loading .carousel-track {
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+/* Custom carousel variants */
+.carousel.compact .carousel-slide {
+  padding: 0 5px;
+}
+
+.carousel.compact .carousel-dots {
+  margin-top: 10px;
+}
+
+.carousel.no-padding .carousel-slide {
+  padding: 0;
+}
+
+.carousel.card-carousel .carousel-slide {
+  padding: 0 8px;
+}
+
+.carousel.full-width {
+  margin: 0 -20px;
+}
+
+.carousel.full-width .carousel-slide {
+  padding: 0 20px;
+}
+
+/* Carousel with external arrows for content-heavy pages */
+.carousel.external-arrows {
+  padding: 0 100px; /* Extra padding for larger external arrows */
+}
+
+@media (max-width: 768px) {
+  .carousel.external-arrows {
+    padding: 0 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel.external-arrows {
+    padding: 0 60px;
+  }
+}
+
+/* Wide carousel that extends beyond normal container constraints */
+.carousel.wide-carousel {
+  width: calc(100% + 40px);
+  margin-left: -20px;
+  margin-right: -20px;
+  padding: 0 80px; /* Keep padding for arrows */
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.02) 0%,
+    rgba(118, 75, 162, 0.02) 100%
+  );
+  border-radius: 12px;
+}
+
+.carousel.wide-carousel .carousel-container {
+  width: 100%;
+}
+
+.carousel.wide-carousel .carousel-wrapper {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.carousel.wide-carousel .carousel-slide {
+  padding: 0 20px; /* Increased padding to keep content away from arrows */
+}
+
+/* Enhanced arrows for wide carousel */
+.carousel.wide-carousel .carousel-arrow {
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.carousel.wide-carousel .carousel-arrow:hover {
+  transform: translateY(-50%) scale(1.15);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2), 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* Position arrows outside content area for wide carousel */
+.carousel.wide-carousel .carousel-arrow-prev {
+  left: 10px; /* Position at the edge of the padding */
+}
+
+.carousel.wide-carousel .carousel-arrow-next {
+  right: 10px; /* Position at the edge of the padding */
+}
+
+/* Responsive adjustments for wide carousel */
+@media (max-width: 768px) {
+  .carousel.wide-carousel {
+    width: calc(100% + 20px);
+    margin-left: -10px;
+    margin-right: -10px;
+    padding: 0 60px;
+  }
+
+  .carousel.wide-carousel .carousel-arrow {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+
+  .carousel.wide-carousel .carousel-arrow-prev {
+    left: 8px;
+  }
+
+  .carousel.wide-carousel .carousel-arrow-next {
+    right: 8px;
+  }
+
+  .carousel.wide-carousel .carousel-slide {
+    padding: 0 15px; /* Reduced padding on tablets */
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel.wide-carousel {
+    width: calc(100% + 10px);
+    margin-left: -5px;
+    margin-right: -5px;
+    padding: 0 50px;
+  }
+
+  .carousel.wide-carousel .carousel-arrow {
+    width: 45px;
+    height: 45px;
+    font-size: 22px;
+  }
+
+  .carousel.wide-carousel .carousel-arrow-prev {
+    left: 5px;
+  }
+
+  .carousel.wide-carousel .carousel-arrow-next {
+    right: 5px;
+  }
+
+  .carousel.wide-carousel .carousel-slide {
+    padding: 0 12px; /* Reduced padding on mobile */
+  }
+}

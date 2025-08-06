@@ -1,0 +1,88 @@
+/* 
+ * Universal Scrollbar Hiding Utility
+ * This file contains comprehensive rules to hide all scrollbars across the application
+ * while maintaining scrolling functionality
+ */
+
+/* Global scrollbar hiding */
+.scrollbar-hidden {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Apply to common scrollable elements */
+.overflow-auto.scrollbar-hidden,
+.overflow-x-auto.scrollbar-hidden,
+.overflow-y-auto.scrollbar-hidden,
+.overflow-scroll.scrollbar-hidden {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.overflow-auto.scrollbar-hidden::-webkit-scrollbar,
+.overflow-x-auto.scrollbar-hidden::-webkit-scrollbar,
+.overflow-y-auto.scrollbar-hidden::-webkit-scrollbar,
+.overflow-scroll.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Specific targeting for common patterns */
+.scrollable-container {
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollable-container::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollable-horizontal {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollable-horizontal::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollable-vertical {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollable-vertical::-webkit-scrollbar {
+  display: none;
+}
+
+/* Modal and overlay specific */
+.modal-content {
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.modal-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .touch-scroll {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .touch-scroll::-webkit-scrollbar {
+    display: none;
+  }
+}
